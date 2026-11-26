@@ -1,0 +1,56 @@
+[project]
+name = "rsr-stub"
+version = "0.1.0"
+description = "Reusable Real2Sim2Real project skeleton with lightweight stub backends"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.26",
+    "dynaconf>=3.2",
+    "pydantic>=2.6",
+    "pyyaml>=6.0",
+    "structlog>=24.0",
+    "typer>=0.12",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[project.scripts]
+rsr = "real2sim2real.core.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["real2sim2real"]
+
+[project.entry-points."real2sim2real.simworld.backends"]
+stub = "real2sim2real.simworld.stub:StubSimWorld"
+
+[project.entry-points."real2sim2real.scene.backends"]
+stub = "real2sim2real.scene.scene_stub:StubScene"
+
+[project.entry-points."real2sim2real.robot.backends"]
+stub = "real2sim2real.robot.robot_stub:StubRobot"
+
+[project.entry-points."real2sim2real.planner.backends"]
+stub = "real2sim2real.planner.planner_stub:StubPlanner"
+
+[project.entry-points."real2sim2real.job.backends"]
+stub = "real2sim2real.job.job_stub:StubJob"
+
+[project.entry-points."real2sim2real.cli.commands"]
+collect = "real2sim2real.job.cli:register"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
