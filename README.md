@@ -2,8 +2,10 @@
 
 虚实闭环平台：**场景重建与数字孪生 → 仿真数据采集 → 策略训练 → 真机评测回流**。
 
-本仓库是可插拔的仿真编排框架：抽象基类 + 配置 / Registry + stub 后端，真实仿真跑在
-**唯一的 Python 环境**——Isaac Sim自带的 `python.sh`。每个任务的场景、机器人、规划器、Job、SimWorld 都是独立注册的后端。
+本仓库是可插拔的仿真编排框架：抽象基类 + 配置 / Registry + stub 后端。每个任务的场景、机器人、规划器、Job、SimWorld 都是独立注册的后端。
+
+**本项目（`rsr_stub`）可以不使用 Isaac Sim 中的 Python**，开发、检查和 stub 运行默认使用 `uv` 管理的 Python 3.12 独立 `.venv`。
+**参考本项目新增的项目必须使用 Isaac Sim 自带的 Python 环境**（通过安装目录中的 `python.sh`），包括项目安装、测试和任务运行；该要求从新项目的 stub 验证阶段开始适用。具体命令见 [创建新项目](docs/new_project.md)。
 
 > Agent / 贡献者：先读 [`AGENTS.md`](AGENTS.md)（目录约定、扩展后端、配置与 CLI 约定）。
 

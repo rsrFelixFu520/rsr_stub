@@ -4,7 +4,21 @@
 
 使用托管平台的模板功能，或将本仓库文件复制到新目录（不复制 `.git/`、`.venv/`、缓存、`outputs/`、`dist/` 和本地环境文件），再在新目录初始化 Git。保留现有许可文件并记录新增代码、资产的来源。
 
-先执行 README 的安装和 stub 通路，确认模板在新位置可独立运行，再加入业务内容。新项目不要引用原 `rsr` 的绝对路径。
+本模板自身可以使用普通 Python，但参考本项目新增的项目必须使用 Isaac Sim 自带的 Python 环境，项目安装、测试和任务运行均通过其 `python.sh` 执行，从初始 stub 验证阶段起适用。
+
+在新仓库根目录设置目标安装位置，安装项目并验证 stub 通路，再加入业务内容：
+
+```bash
+export RSR_ISAACSIM_HOME=/path/to/isaacsim
+"$RSR_ISAACSIM_HOME/python.sh" -m pip install -e '.[dev]'
+./scripts/rsr list-backends
+./scripts/rsr collect run -c configs/stub/default.toml
+"$RSR_ISAACSIM_HOME/python.sh" -m ruff check real2sim2real scripts tests
+"$RSR_ISAACSIM_HOME/python.sh" -m ruff format --check real2sim2real scripts tests
+"$RSR_ISAACSIM_HOME/python.sh" -m pytest -q
+```
+
+`/path/to/isaacsim` 必须替换为本机实际安装目录。核对所选 Isaac Sim 自带 Python 与项目 `requires-python`、依赖的兼容性，并记录实际版本；本模板的 Python 3.12 开发环境和 `uv.lock` 不替代目标运行时的依赖管理。新项目不要引用原 `rsr` 的绝对路径。
 
 需要替换或确认的内容：
 
@@ -16,8 +30,9 @@
 | `AGENTS.md` | 本项目的任务范围、目录约定、运行限制与检查方式 |
 | `docs/` | 替换模板迁移背景，添加实际任务说明 |
 | 环境示例和编辑器配置 | 本项目需要的变量和运行配置；不写个人机器路径 |
+| `scripts/rsr`、`scripts/check` | 统一使用 Isaac Sim 的 `python.sh`；缺少有效安装路径时明确报错，删除 uv 回退 |
 
-可以只改发行名并保留 `real2sim2real` Python 包与插件组，但必须使用独立环境。发行名不同仍可能共享同名模块、`rsr` 命令和 entry point 组，不能因此与旧 `rsr` 混装。
+可以只改发行名并保留 `real2sim2real` Python 包与插件组，但必须使用与旧项目隔离的 Isaac Sim Python 环境。发行名不同仍可能共享同名模块、`rsr` 命令和 entry point 组，不能因此与旧 `rsr` 混装。
 
 确需在同一环境并存时，同时重命名 Python 包目录、全部导入、CLI 入口、entry point 组及 `registry.py` / `core/cli.py` 中对应常量，并更新配置环境变量前缀和文档。完成后检查 wheel 内容和所有注册入口。
 
@@ -88,9 +103,11 @@ message = "my first task"
 重新安装使 entry points 生效，然后运行：
 
 ```bash
-uv sync --extra dev
-uv run rsr list-backends --kind job
-uv run rsr collect run -c configs/demo/default.toml
+# 沿用第 1 步设置的 RSR_ISAACSIM_HOME
+"$RSR_ISAACSIM_HOME/python.sh" -m pip install -e '.[dev]'
+./scripts/rsr list-backends --kind job
+./scripts/rsr collect run -c configs/demo/default.toml
+# 此时 scripts/check 应已按第 1 步改为使用 Isaac Sim 的 python.sh
 ./scripts/check
 ```
 
