@@ -1,0 +1,5 @@
+# 相对路径以当前配置文件目录为基准，先加载父配置再覆盖。
+inherit = "default.toml"
+
+[logging]
+level = "DEBUG"

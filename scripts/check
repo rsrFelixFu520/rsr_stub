@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+uv run --locked --extra dev ruff check real2sim2real scripts tests
+uv run --locked --extra dev ruff format --check real2sim2real scripts tests
+uv run --locked --extra dev pytest -q
+uv run --locked rsr list-backends
+uv run --locked rsr collect run -c configs/stub/default.toml

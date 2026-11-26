@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Stub lifecycle",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "real2sim2real.core.cli",
+      "args": ["collect", "run", "-c", "configs/stub/debug.toml"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ]
+}

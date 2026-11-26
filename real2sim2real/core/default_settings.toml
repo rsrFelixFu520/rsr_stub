@@ -1,0 +1,19 @@
+# 包内默认配置随 wheel 分发；不需要 Isaac Sim 或 GPU。
+[logging]
+level = "INFO"
+console = true
+
+[sim_world]
+backend = "stub"
+
+[scene]
+backend = "stub"
+
+[robot]
+backend = "stub"
+
+[planner]
+backend = "stub"
+
+[job]
+backend = "stub"

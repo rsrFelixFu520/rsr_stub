@@ -1,0 +1,15 @@
+# 显式展示五个能力域。新增任务时复制到 configs/<task>/。
+[sim_world]
+backend = "stub"
+
+[scene]
+backend = "stub"
+
+[robot]
+backend = "stub"
+
+[planner]
+backend = "stub"
+
+[job]
+backend = "stub"
